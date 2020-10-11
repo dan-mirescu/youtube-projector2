@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Youtube projector</title>
+        <link rel="stylesheet" href="styles.css">
+        <!-- <script data-consolejs-channel="de7f1967-ecf2-6329-5d45-43648c34879d" src="https://remotejs.com/agent/agent.js"></script> -->
+        <script src="lib/vue.js"></script>
+        <script src="lib/socket.io.js"></script>
+    </head>
+    <body>
+        <!-- <button id="lol">lol</button> -->
+        <div id="app">
+            <div id="overlay" v-if="overlayVisible" v-on:click="overlayClicked()">
+                Click anywhere in this page to activate the player.
+            </div>
+
+            <transition name="fade">
+                <div id="header" v-if="headerVisible">
+                    <div class="header-col-1">
+                        <!-- tbd -->
+                    </div>
+                    <div class="header-col-2">
+                        <p>{{video.title}}</p>
+                        <p>{{video.playState}}, {{ video.currentTime | friendlyTime }} / {{ video.totalTime | friendlyTime }}</p>
+                    </div>
+                </div>
+            </transition>
+            
+            <video ref="videoElement"></video>
+            <audio ref="audioElement"></audio>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

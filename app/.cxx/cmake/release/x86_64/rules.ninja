@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = C:\Users\danmi\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\cmake.exe -HD:\Proiecte\youtube-projector2\YoutubeProjector.meh\app -BD:\Proiecte\youtube-projector2\YoutubeProjector.meh\app\.cxx\cmake\release\x86_64
+  command = C:\Users\danmi\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\cmake.exe -HD:\Proiecte\youtube-projector2\YoutubeProjector\app -BD:\Proiecte\youtube-projector2\YoutubeProjector\app\.cxx\cmake\release\x86_64
   description = Re-running CMake...
   generator = 1
 

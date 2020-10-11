@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Youtube controller</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styles.css">
+        <script src="lib/vue.js"></script>
+        <script src="lib/socket.io.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <div class="controls-row">
+                <button v-if="clipboardAccessType != 'none'" v-on:click="pasteYoutubeUrl()">Paste Youtube URL</button>
+                <div v-if="clipboardAccessType == 'none'" class="no-clipboard-access">
+                    <input type="text" v-model="youtubeUrl" class="youtube-url-input" placeholder="Paste Youtube URL here">                
+                    <button v-on:click="submitYoutubeUrl()">Go</button>
+                    <button v-on:click="clearYoutubeUrl()">Clear</button>
+                </div>
+
+                <button v-on:click="showInstructions()">Instructions</button>
+            </div>
+
+            <div v-if="!video.url">
+                <p>No video loaded yet.</p>
+            </div>
+
+            <div v-if="video.url">
+                <p class="video-title">{{video.title}}</p>
+
+                <div id="videoControls">
+                    <button v-on:click="play()">Play</button>
+                    <button v-on:click="pause()">Pause</button>
+                    <button v-on:click="seek(-30)">-30 sec</button>
+                    <button v-on:click="seek(-5)">-5 sec</button>
+                    <button v-on:click="seek(5)">+5 sec</button>
+                    <button v-on:click="seek(30)">+30 sec</button>
+                </div>
+
+                <p>
+                    <img :src="video.thumbnailSrc">
+                </p>
+
+                <div class="video-description">
+                    {{video.description}}
+                </div>
+            </div>
+
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

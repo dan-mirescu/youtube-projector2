@@ -1,5 +1,8 @@
 package com.yourorg.sample;
 
+import android.app.Application;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -9,12 +12,38 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 import java.net.*;
 import java.io.*;
 
 public class MainActivity extends AppCompatActivity {
+
+    public class WebAppInterface {
+        @JavascriptInterface
+        public void copyToClipboard(String text) {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("demo", text);
+            clipboard.setPrimaryClip(clip);
+        }
+
+        @JavascriptInterface
+        public String pasteFromClipboard() {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = clipboard.getPrimaryClip();
+            if (clip != null && clip.getItemCount() > 0) {
+                return clip.getItemAt(0).coerceToText(MainActivity.this).toString();
+            }
+
+            return null;
+        }
+    }
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -29,6 +58,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        WebView myWebView = (WebView) findViewById(R.id.webview);
+        myWebView.loadUrl("file:///android_asset/startup/index.html");
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        myWebView.addJavascriptInterface(new WebAppInterface(), "NativeAndroid");
+
+        myWebView.setWebChromeClient(new WebChromeClient());
+
+        myWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                view.loadUrl(request.getUrl().toString());
+                return false;
+            }
+        });
 
         if( !_startedNodeAlready ) {
             _startedNodeAlready=true;

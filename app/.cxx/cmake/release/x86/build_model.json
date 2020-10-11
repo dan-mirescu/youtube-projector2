@@ -5,9 +5,9 @@
     "environmentVariables": []
   },
   "cmake": {
-    "cmakeArtifactsBaseFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\release\\x86",
-    "cmakeServerLogFile": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\release\\x86\\cmake_server_log.txt",
-    "cmakeWrappingBaseFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cxx\\release\\x86",
+    "cmakeArtifactsBaseFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\release\\x86",
+    "cmakeServerLogFile": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\release\\x86\\cmake_server_log.txt",
+    "cmakeWrappingBaseFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cxx\\release\\x86",
     "effectiveConfiguration": {
       "name": "traditional-android-studio-cmake-environment",
       "description": "Composite reified CMakeSettings configuration",
@@ -15,13 +15,13 @@
       "inheritEnvironments": [
         "ndk"
       ],
-      "buildRoot": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\release\\x86",
+      "buildRoot": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\release\\x86",
       "cmakeToolchain": "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\ndk\\21.3.6528147\\build\\cmake\\android.toolchain.cmake",
       "cmakeExecutable": "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\cmake.exe",
       "variables": [
         {
           "name": "CMAKE_FIND_ROOT_PATH",
-          "value": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\release\\prefab\\x86\\prefab"
+          "value": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\release\\prefab\\x86\\prefab"
         },
         {
           "name": "CMAKE_BUILD_TYPE",
@@ -57,7 +57,7 @@
         },
         {
           "name": "CMAKE_LIBRARY_OUTPUT_DIRECTORY",
-          "value": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\build\\intermediates\\cmake\\release\\obj\\x86"
+          "value": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\build\\intermediates\\cmake\\release\\obj\\x86"
         },
         {
           "name": "CMAKE_MAKE_PROGRAM",
@@ -78,14 +78,14 @@
       ]
     }
   },
-  "cxxBuildFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\release\\x86",
+  "cxxBuildFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\release\\x86",
   "info": {
     "abi": "X86",
     "bitness": 32,
     "deprecated": false,
     "default": true
   },
-  "originalCxxBuildFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\release\\x86",
+  "originalCxxBuildFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\release\\x86",
   "variant": {
     "buildSystemArgumentList": [
       "-DANDROID_STL\u003dc++_shared"
@@ -105,12 +105,12 @@
         "ninjaExe": "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe"
       },
       "cmakeToolchainFile": "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\ndk\\21.3.6528147\\build\\cmake\\android.toolchain.cmake",
-      "cxxFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx",
+      "cxxFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx",
       "gradleModulePathName": ":app",
-      "intermediatesFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\build\\intermediates",
-      "makeFile": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
-      "moduleBuildFile": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\build.gradle",
-      "moduleRootFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app",
+      "intermediatesFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\build\\intermediates",
+      "makeFile": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\CMakeLists.txt",
+      "moduleBuildFile": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\build.gradle",
+      "moduleRootFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app",
       "ndkDefaultAbiList": [
         "ARMEABI_V7A",
         "ARM64_V8A",
@@ -175,12 +175,12 @@
       "ndkDefaultStl": "LIBCXX_STATIC",
       "ndkVersion": "21.3.6528147",
       "project": {
-        "compilerSettingsCacheFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\.cxx",
-        "cxxFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\.cxx",
+        "compilerSettingsCacheFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\.cxx",
+        "cxxFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\.cxx",
         "isBuildOnlyTargetAbiEnabled": true,
         "isCmakeBuildCohabitationEnabled": false,
         "isNativeCompilerSettingsCacheEnabled": false,
-        "rootBuildGradleFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh",
+        "rootBuildGradleFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector",
         "sdkFolder": "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk",
         "isPrefabEnabled": false
       },
@@ -197,7 +197,7 @@
         "SYSTEM": {}
       }
     },
-    "objFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\build\\intermediates\\cmake\\release\\obj",
+    "objFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\build\\intermediates\\cmake\\release\\obj",
     "variantName": "release",
     "validAbiList": [
       "ARMEABI_V7A",
@@ -205,8 +205,8 @@
       "X86",
       "X86_64"
     ],
-    "prefabDirectory": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\release\\prefab",
+    "prefabDirectory": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\release\\prefab",
     "prefabPackageDirectoryList": []
   },
-  "prefabFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\release\\prefab\\x86"
+  "prefabFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\release\\prefab\\x86"
 }
