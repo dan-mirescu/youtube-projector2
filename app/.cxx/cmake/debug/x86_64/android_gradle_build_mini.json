@@ -1,0 +1,22 @@
+{
+  "buildFiles": [
+    "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\ndk\\21.3.6528147\\build\\cmake\\android.toolchain.cmake",
+    "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\CMakeLists.txt",
+    "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\ndk\\21.3.6528147\\build\\cmake\\platforms.cmake"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\debug\\x86_64\" clean"
+  ],
+  "buildTargetsCommand": "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\debug\\x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Debug-x86_64": {
+      "artifactName": "native-lib",
+      "buildCommand": "C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\debug\\x86_64\" native-lib",
+      "abi": "x86_64",
+      "output": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\build\\intermediates\\cmake\\debug\\obj\\x86_64\\libnative-lib.so",
+      "runtimeFiles": [
+        "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\libnode\\bin\\x86_64\\libnode.so"
+      ]
+    }
+  }
+}
