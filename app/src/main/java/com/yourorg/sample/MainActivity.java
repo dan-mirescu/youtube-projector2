@@ -1,5 +1,9 @@
 package com.yourorg.sample;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -34,17 +38,20 @@ public class MainActivity extends AppCompatActivity {
 
                     //The path where we expect the node project to be at runtime.
                     String nodeDir=getApplicationContext().getFilesDir().getAbsolutePath()+"/nodejs-project";
-                    //Recursively delete any existing nodejs-project.
-                    File nodeDirReference=new File(nodeDir);
-                    if (nodeDirReference.exists()) {
-                        deleteFolderRecursively(new File(nodeDir));
+                    if (wasAPKUpdated()) {
+                        //Recursively delete any existing nodejs-project.
+                        File nodeDirReference=new File(nodeDir);
+                        if (nodeDirReference.exists()) {
+                            deleteFolderRecursively(new File(nodeDir));
+                        }
+                        //Copy the node project from assets into the application's data path.
+                        copyAssetFolder(getApplicationContext().getAssets(), "nodejs-project", nodeDir);
+
+                        saveLastUpdateTime();
                     }
-                    //Copy the node project from assets into the application's data path.
-                    copyAssetFolder(getApplicationContext().getAssets(), "nodejs-project", nodeDir);
                     startNodeWithArguments(new String[]{"node",
                             nodeDir+"/main.js"
                     });
-
 //                    startNodeWithArguments(new String[]{"node", "-e",
 //                            "var http = require('http'); " +
 //                                    "var versions_server = http.createServer( (request, response) => { " +
@@ -159,6 +166,33 @@ public class MainActivity extends AppCompatActivity {
         while ((read = in.read(buffer)) != -1) {
             out.write(buffer, 0, read);
         }
+    }
+
+    private boolean wasAPKUpdated() {
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("NODEJS_MOBILE_PREFS", Context.MODE_PRIVATE);
+        long previousLastUpdateTime = prefs.getLong("NODEJS_MOBILE_APK_LastUpdateTime", 0);
+        long lastUpdateTime = 1;
+        try {
+            PackageInfo packageInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+            lastUpdateTime = packageInfo.lastUpdateTime;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return (lastUpdateTime != previousLastUpdateTime);
+    }
+
+    private void saveLastUpdateTime() {
+        long lastUpdateTime = 1;
+        try {
+            PackageInfo packageInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+            lastUpdateTime = packageInfo.lastUpdateTime;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        SharedPreferences prefs = getApplicationContext().getSharedPreferences("NODEJS_MOBILE_PREFS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong("NODEJS_MOBILE_APK_LastUpdateTime", lastUpdateTime);
+        editor.commit();
     }
 
     /**

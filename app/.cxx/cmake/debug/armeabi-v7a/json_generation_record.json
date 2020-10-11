@@ -2,37 +2,109 @@
   {
     "level": "INFO",
     "message": "Start JSON generation. Platform version: 21 min SDK version: armeabi-v7a",
-    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\CMakeLists.txt",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
     "tag": "debug|armeabi-v7a"
   },
   {
     "level": "INFO",
     "message": "No CMake version was specified in build.gradle. Using default version 3.10.2.",
-    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\CMakeLists.txt",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
     "tag": "debug|armeabi-v7a"
   },
   {
     "level": "INFO",
     "message": "Trying to locate CMake in local SDK repository.",
-    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\CMakeLists.txt",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\build-tools\\25.0.3\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\build-tools\\29.0.2\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\build-tools\\30.0.2\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\emulator\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\extras\\google\\Android_Emulator_Hypervisor_Driver\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\ndk\\21.3.6528147\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\patcher\\v4\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\platform-tools\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\platforms\\android-25\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\platforms\\android-30\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
+    "tag": "debug|armeabi-v7a"
+  },
+  {
+    "level": "INFO",
+    "message": "Parsing C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\tools\\package.xml",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
     "tag": "debug|armeabi-v7a"
   },
   {
     "level": "INFO",
     "message": "- CMake found in SDK at \u0027C:\\Users\\danmi\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\u0027 had version \u00273.10.2\u0027",
-    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\CMakeLists.txt",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
     "tag": "debug|armeabi-v7a"
   },
   {
     "level": "INFO",
-    "message": "JSON \u0027D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\debug\\armeabi-v7a\\android_gradle_build.json\u0027 was up-to-date",
-    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\CMakeLists.txt",
+    "message": "JSON \u0027D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\.cxx\\cmake\\debug\\armeabi-v7a\\android_gradle_build.json\u0027 was up-to-date",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
     "tag": "debug|armeabi-v7a"
   },
   {
     "level": "INFO",
     "message": "JSON generation completed without problems",
-    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\CMakeLists.txt",
+    "file": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector.meh\\app\\CMakeLists.txt",
     "tag": "debug|armeabi-v7a"
   }
 ]
