@@ -4,5 +4,59 @@
     </head>
     <body>
         <a href="http://localhost:4001">http://localhost:4001</a>
+        <br>
+        <button type="button" onclick="doStuff()">Do stuff</button>
+
+        <script>
+
+        function doStuff() {
+            var xhr = new XMLHttpRequest();
+            var currentTry = 0;
+            var maxTries = 5;
+            xhr.onload = function() {
+                console.log("ONLOAD");
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    console.log("success");
+
+                    if(xhr.responseText == "pong") {
+                        location.href = "http://localhost:4001";
+                    }
+                }
+                else {
+                    if(currentTry < maxTries) {
+                        scheduleRequest();
+                    }
+                    else {
+                        alert("Problem");
+                    }
+                }
+            };
+
+            xhr.onerror = function() {
+                console.log("ONERROR");
+                if(currentTry < maxTries) {
+                    scheduleRequest();
+                }
+                else {
+                    alert("Problem");
+                }
+            };
+
+            scheduleRequest();
+
+            function makeRequest() {
+                xhr.open('GET', 'http://localhost:4001/api/ping');
+                xhr.send();
+            }
+
+            function scheduleRequest() {
+                currentTry++;
+                setTimeout(makeRequest, 2000);
+            }
+        }
+
+        doStuff();
+
+        </script>
     </body>
 </html>

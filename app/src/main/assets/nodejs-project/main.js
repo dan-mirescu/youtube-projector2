@@ -65,6 +65,7 @@ const state = {
 function configureProjectorApp() {
     // serve files in public folder (css, js etc)
     projectorApp.use(serve(__dirname + '/public/projector'));
+
     // this last middleware catches any request that isn't handled by
     // koa-static or koa-router, ie your index.html in your example
     projectorApp.use(function* index() {
@@ -98,6 +99,19 @@ function configureProjectorApp() {
 
 function configureControllerApp() {
     controllerApp.use(serve(__dirname + '/public/controller'));
+
+    let router = new Router();
+    router.get("/api/ping", (ctx) => {
+        ctx.set('Access-Control-Allow-Origin', '*');
+        ctx.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        ctx.set('Access-Control-Allow-Methods', 'GET');
+        ctx.body = "pong";
+    });
+    controllerApp.use(router.routes());
+
+    controllerApp.use(function* index() {
+        yield send(this, __dirname + '/index.html');
+    });
 
     controllerIo.on('connection', function(socket){
         console.log('controller io connected');
