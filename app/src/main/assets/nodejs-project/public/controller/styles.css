@@ -6,8 +6,24 @@ input[type=text] {
     height: 40px;
 }
 
+.display-flex {
+    display: flex;
+}
+
 button {
     height: 40px;
+}
+
+.connection-status.orange {
+    color: orange;
+}
+
+.connection-status.green {
+    color: darkgreen;
+}
+
+.connection-status.red {
+    color: red;
 }
 
 .video-title {
@@ -30,4 +46,10 @@ button {
 
 .controls-row .no-clipboard-access .youtube-url-input {
     flex: 1 1 auto;
+}
+
+.section-title {
+    flex: 1 1 auto;
+    margin: 0px;
+    min-width: 130px;
 }

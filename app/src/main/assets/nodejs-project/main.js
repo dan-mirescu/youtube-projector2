@@ -145,7 +145,7 @@ function configureControllerApp() {
         });
 
         if(state.loadedVideo.url) {
-            console.log("projector server emit loadVideoInProjector");
+            console.log("controller server emit loadVideoInProjector");
             socket.emit("loadVideoResponse", JSON.stringify({
                 type: "data",
                 data: {
@@ -155,10 +155,14 @@ function configureControllerApp() {
             }));
         }
 
+        socket.emit("serverStateUpdate", JSON.stringify({
+            connectedProjectorsCount: state.connectedProjectorsCount
+        }));
+
         socket.on("requestServerData", () => {
             console.log("ZEZ controller server on requestServerData");
 
-            console.log("projector server emit serverDataResponse");
+            console.log("controller server emit serverDataResponse");
             socket.emit("serverDataResponse", JSON.stringify({
                 type: "data",
                 data: serverData
@@ -208,7 +212,7 @@ function configureControllerApp() {
                     }
                 }));
 
-                console.log("projector server emit loadVideoResponse");
+                console.log("controller server emit loadVideoResponse");
                 socket.emit("loadVideoResponse", JSON.stringify(response));
             }
             catch(e) {
@@ -216,7 +220,7 @@ function configureControllerApp() {
                     type: "error",
                     data: e.message
                 };
-                console.log("projector server emit loadVideoResponse with error");
+                console.log("controller server emit loadVideoResponse with error");
                 socket.emit("loadVideoResponse", JSON.stringify(response));
             }
         });

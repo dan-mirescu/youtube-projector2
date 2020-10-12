@@ -19,7 +19,9 @@
                 <button v-on:click="showInstructions()">Instructions</button>
             </div>
 
-            <div>
+            <div style="margin-top: 5px">
+                Server connection: <span class="connection-status" :class="serverConnectionStatusCssClass">{{serverConnectionStatus}}</span>
+                <br>
                 Connected projectors: {{connectedProjectorsCount}}
             </div>
 
@@ -40,16 +42,27 @@
                 </div>
 
                 <p>
+                    View: 
+                    <label><input type="checkbox" v-model="viewOptions.showThumbnail"> thumbnail</label>
+                    <label><input type="checkbox" v-model="viewOptions.showDescription"> description</label>
+                    <label><input type="checkbox" v-model="viewOptions.showLog"> log</label>
+                </p>
+
+                <p v-if="viewOptions.showThumbnail">
                     <img :src="video.thumbnailSrc">
                 </p>
 
-                <div class="video-description">
+                <div class="video-description" v-if="viewOptions.showDescription">
                     {{video.description}}
                 </div>
             </div>
 
-            <div class="log">
-                <h3>Log</h3>
+            <div class="log" v-if="viewOptions.showLog">
+                <div class="display-flex">
+                    <h3 class="section-title">Log</h3>
+                    <button type="button" v-on:click="clearLog()">Clear log</button>
+                </div>
+                
                 <p v-if="!logEntries.length">&lt; no entry &gt;</p>
                 <p v-for="entry in logEntries">{{entry}}</p>
             </div>

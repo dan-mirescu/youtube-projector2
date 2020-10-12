@@ -5,8 +5,15 @@ new Vue({
         clipboardAccessType: undefined,
         youtubeUrl: undefined,
         serverData: undefined,
+        serverConnectionStatus: "pending",
+        serverConnectionStatusCssClass: "orange",
         connectedProjectorsCount: 0,
         logEntries: [],
+        viewOptions: {
+            showThumbnail: true,
+            showDescription: true,
+            showLog: true,
+        },
         video: {
             title: undefined,
             description: undefined,
@@ -20,20 +27,12 @@ new Vue({
     mounted: function() {
         this.socket = io();
 
-        var self = this;
-
         if(typeof(NativeAndroid) != "undefined") {
             this.clipboardAccessType = "NativeAndroid";
         }
         else {
             if(navigator && navigator.clipboard && typeof(navigator.clipboard.readText) == "function") {
-                navigator.clipboard.readText()
-                .then(function() {
-                    self.clipboardAccessType = "browser";
-                })
-                .catch(function() {
-                    self.clipboardAccessType = "none";
-                });
+                this.clipboardAccessType = "browser";
             }
         }
 
@@ -41,10 +40,14 @@ new Vue({
 
         this.socket.on('connect', function() {
             self.log('Connected to controller server');
+            self.serverConnectionStatus = "ok";
+            self.serverConnectionStatusCssClass = "green";
         });
 
         this.socket.on('disconnect', function() {
             self.log("!! Disconnected from controller server");
+            self.serverConnectionStatus = "bad";
+            self.serverConnectionStatusCssClass = "red";
         });
 
         this.socket.on('error', function() {
@@ -53,30 +56,44 @@ new Vue({
 
         this.socket.on('connect_error', function() {
             self.log("!! connect_error from controller server");
+            self.serverConnectionStatus = "bad";
+            self.serverConnectionStatusCssClass = "red";
         });
 
         this.socket.on('connect_timeout', function() {
             self.log("!! connect_timeout from controller server");
+            self.serverConnectionStatus = "bad";
+            self.serverConnectionStatusCssClass = "red";
         });
 
         this.socket.on('reconnect', function() {
             self.log("!! reconnect from controller server");
+            self.serverConnectionStatus = "ok";
+            self.serverConnectionStatusCssClass = "green";
         });
 
         this.socket.on('reconnect_attempt', function() {
             self.log("!! reconnect_attempt from controller server");
+            self.connectionStatus = "pending";
+            self.connectionCssClass = "orange";
         });
 
         this.socket.on('reconnecting', function() {
             self.log("!! reconnecting from controller server");
+            self.connectionStatus = "pending";
+            self.connectionCssClass = "orange";
         });
 
         this.socket.on('reconnect_error', function() {
             self.log("!! reconnect_error from controller server");
+            self.connectionStatus = "bad";
+            self.connectionCssClass = "red";
         });
 
         this.socket.on('reconnect_failed', function() {
             self.log("!! reconnect_failed from controller server");
+            self.connectionStatus = "bad";
+            self.connectionCssClass = "red";
         });
 
         this.socket.on("serverStateUpdate", function(stateJson) {
@@ -166,6 +183,10 @@ new Vue({
                         self.youtubeUrl = url;
                         self.log("controller client emit loadVideo");
                         self.socket.emit("loadVideo", url);
+                    })
+                    .catch(function() {
+                        alert("Automating pasting did not work.\nPaste your link in the text field that will be displayed.");
+                        self.clipboardAccessType = "none";
                     });
                     break;
                 }
@@ -178,6 +199,9 @@ new Vue({
             var time = new Date().toISOString().substr(11, 8);
             this.logEntries.push("(" + time + ") " + text);
             console.log(text);
+        },
+        clearLog: function() {
+            this.logEntries = [];
         },
         clearYoutubeUrl: function() {
             this.youtubeUrl = "";
