@@ -2,13 +2,17 @@ var app = new Vue({
     el: "#app",
     data: {
         socket: undefined,
+        connectionStatus: "pending",
+        connectionCssClass: "orange",
         overlayVisible: undefined,
+        logVisible: false,
+        logEntries: [],
         ignoreControlCommands: undefined,
         headerVisible: true,
         headerPinned: true,
         headerFadeoutTimeout: undefined,
         video: {
-            title: undefined,
+            title: "(No video)",
             videoUrl: undefined,
             audioUrl: undefined,
             playState: undefined,
@@ -47,6 +51,68 @@ var app = new Vue({
 
         this.socket = io();
 
+        var self = this;
+
+        this.socket.on('connect', function() {
+            self.log('Connected to projector server');
+            self.connectionStatus = "OK";
+            self.connectionCssClass = "green";
+        });
+
+        this.socket.on('disconnect', function() {
+            self.log("!! Disconnected from projector server");
+            self.connectionStatus = "bad";
+            self.connectionCssClass = "red";
+
+        });
+
+        this.socket.on('error', function() {
+            self.log("!! Error on projector client socket");
+        });
+
+        this.socket.on('connect_error', function() {
+            self.log("!! connect_error on projector client socket");
+            self.connectionStatus = "bad";
+            self.connectionCssClass = "red";
+        });
+
+        this.socket.on('connect_timeout', function() {
+            self.log("!! connect_timeout on projector client socket");
+            self.connectionStatus = "bad";
+            self.connectionCssClass = "red";
+        });
+
+        this.socket.on('reconnect', function() {
+            self.log("!! reconnect on projector client socket");
+            self.connectionStatus = "OK";
+            self.connectionCssClass = "green";
+        });
+
+        this.socket.on('reconnect_attempt', function() {
+            self.log("!! reconnect_attempt on projector client socket");
+            self.connectionStatus = "pending";
+            self.connectionCssClass = "orange";
+        });
+
+        this.socket.on('reconnecting', function() {
+            self.log("!! reconnecting on projector client socket");
+            self.connectionStatus = "pending";
+            self.connectionCssClass = "orange";
+        });
+
+        this.socket.on('reconnect_error', function() {
+            self.log("!! reconnect_error on projector client socket");
+            self.connectionStatus = "bad";
+            self.connectionCssClass = "red";
+        });
+
+        this.socket.on('reconnect_failed', function() {
+            self.log("!! reconnect_failed on projector client socket");
+            self.connectionStatus = "bad";
+            self.connectionCssClass = "red";
+        });
+
+
         // var videoData = {
         //     allData: "{raw data from ytdl}",
         //     selectedOptions: {
@@ -54,7 +120,6 @@ var app = new Vue({
         //     }
         // };
 
-        var self = this;
 
         document.addEventListener("mousemove", function() {
             self.showHeader();
@@ -75,24 +140,41 @@ var app = new Vue({
 
 
         this.socket.on("loadVideoInProjector", function(videoDataJson) {
-            console.log("projector client on loadVideoInProjector");
+            self.log("projector client: on loadVideoInProjector");
             
             var videoData = JSON.parse(videoDataJson);
-            self.video.allData = videoData.allData;
-            self.video.title = videoData.allData.videoDetails.title;
-            self.video.videoUrl = videoData.selectedOptions.videoUrl;
-            self.video.audioUrl = videoData.selectedOptions.audioUrl;
+            if(videoData) {
+                self.video.allData = videoData.allData;
+                self.video.title = videoData.allData.videoDetails.title;
+                self.video.videoUrl = videoData.selectedOptions.videoUrl;
+                self.video.audioUrl = videoData.selectedOptions.audioUrl;
+    
+                self.video.playState = "paused";
+                self.video.currentTime = 0;
+                self.video.totalTime = videoData.allData.videoDetails.lengthSeconds;
+    
+                self.videoElement.src = self.video.videoUrl;
+                if(self.video.audioUrl) {
+                    self.audioElement.src = self.video.audioUrl;
+                }
+            }
+            else {
+                self.video.allData = {};
+                self.video.title = "(No video)";
+                self.video.videoUrl = "";
+                self.video.audioUrl = "";
 
-            self.video.playState = "paused";
-            self.video.currentTime = 0;
-            self.video.totalTime = videoData.allData.videoDetails.lengthSeconds;
+                self.video.playState = "paused";
+                self.video.currentTime = 0;
+                self.video.totalTime = 0;
 
-            self.videoElement.src = self.video.videoUrl;
-            self.audioElement.src = self.video.audioUrl;
+                self.videoElement.src = "";
+                self.audioElement.src = "";
+            }
         });
 
         this.socket.on("controlVideoInProjector", function(commandJson) {
-            console.log("projector client on controlVideoInProjector");
+            self.log("projector client: on controlVideoInProjector " + commandJson);
 
             if(self.ignoreControlCommands) {
                 console.warn("ignoring control command");
@@ -111,17 +193,7 @@ var app = new Vue({
                     break;
                 }
                 case "seek": {
-                    self.videoElement.currentTime += command.amount;
-
-                    if(self.video.audioUrl !== undefined) {
-                        self.audioElement.currentTime = self.videoElement.currentTime;
-                    }
-
-                    var newCurrentTime = self.video.currentTime + command.amount;
-                    newCurrentTime = Math.max(newCurrentTime, 0);
-                    newCurrentTime = Math.min(newCurrentTime, self.video.totalTime);
-                    self.video.currentTime = newCurrentTime;
-
+                    self.seek(command.amount);
                     break;
                 }
             }
@@ -158,6 +230,30 @@ var app = new Vue({
             // if(this.video.audioUrl !== undefined) {
             //     this.audioElement.pause();
             // }
+        },
+        seek: function(amount) {
+            this.videoElement.currentTime += amount;
+
+            if(this.video.audioUrl !== undefined) {
+                this.audioElement.currentTime = this.videoElement.currentTime;
+            }
+
+            var newCurrentTime = this.video.currentTime + amount;
+            newCurrentTime = Math.max(newCurrentTime, 0);
+            newCurrentTime = Math.min(newCurrentTime, this.video.totalTime);
+            this.video.currentTime = newCurrentTime;
+
+        },
+        log: function(text) {
+            var time = new Date().toISOString().substr(11, 8);
+            this.logEntries.push("(" + time + ") " + text);
+            console.log(text);
+        },
+        clearLog: function() {
+            this.logEntries = [];
+        },
+        goFullscreen: function() {
+            this.videoElement.requestFullscreen();
         },
         showHeader: function() {
             this.headerVisible = true;

@@ -5,6 +5,8 @@ new Vue({
         clipboardAccessType: undefined,
         youtubeUrl: undefined,
         serverData: undefined,
+        connectedProjectorsCount: 0,
+        logEntries: [],
         video: {
             title: undefined,
             description: undefined,
@@ -35,17 +37,71 @@ new Vue({
             }
         }
 
+        var self = this;
+
+        this.socket.on('connect', function() {
+            self.log('Connected to controller server');
+        });
+
+        this.socket.on('disconnect', function() {
+            self.log("!! Disconnected from controller server");
+        });
+
+        this.socket.on('error', function() {
+            self.log("!! Error from controller server");
+        });
+
+        this.socket.on('connect_error', function() {
+            self.log("!! connect_error from controller server");
+        });
+
+        this.socket.on('connect_timeout', function() {
+            self.log("!! connect_timeout from controller server");
+        });
+
+        this.socket.on('reconnect', function() {
+            self.log("!! reconnect from controller server");
+        });
+
+        this.socket.on('reconnect_attempt', function() {
+            self.log("!! reconnect_attempt from controller server");
+        });
+
+        this.socket.on('reconnecting', function() {
+            self.log("!! reconnecting from controller server");
+        });
+
+        this.socket.on('reconnect_error', function() {
+            self.log("!! reconnect_error from controller server");
+        });
+
+        this.socket.on('reconnect_failed', function() {
+            self.log("!! reconnect_failed from controller server");
+        });
+
+        this.socket.on("serverStateUpdate", function(stateJson) {
+            self.log("controller client on serverStateUpdate");
+            var state = JSON.parse(stateJson);
+            if(state.connectedProjectorsCount !== undefined) {
+                self.connectedProjectorsCount = state.connectedProjectorsCount;
+            }
+        });
+
+        this.socket.on("message", function(message) {
+            self.log("!! Message from server: " + message);
+        });
+
         this.socket.on("serverDataResponse", function(serverDataResponseJson) {
-            console.log("controller client on serverDataResponse");
+            self.log("controller client on serverDataResponse");
             var serverDataResponse = JSON.parse(serverDataResponseJson);
             self.serverData = serverDataResponse.data;
         });
 
-        console.log("projector client emit requestServerData");
+        this.log("projector client emit requestServerData");
         this.socket.emit("requestServerData");
 
         this.socket.on("loadVideoResponse", function(responseText) {
-            console.log("controller client on loadVideoResponse");
+            self.log("controller client on loadVideoResponse");
             var response = JSON.parse(responseText);
 
             if(response.type == "error") {
@@ -100,6 +156,7 @@ new Vue({
             switch(this.clipboardAccessType) {
                 case "NativeAndroid": {
                     self.youtubeUrl = NativeAndroid.pasteFromClipboard();
+                    self.log("controller client emit loadVideo");
                     self.socket.emit("loadVideo", self.youtubeUrl);
                     break;
                 }
@@ -107,6 +164,7 @@ new Vue({
                     navigator.clipboard.readText()
                     .then(function(url) {
                         self.youtubeUrl = url;
+                        self.log("controller client emit loadVideo");
                         self.socket.emit("loadVideo", url);
                     });
                     break;
@@ -116,10 +174,16 @@ new Vue({
             // var url = await navigator.clipboard.readText();
             // this.socket.emit("loadVideo", url);
         },
+        log: function(text) {
+            var time = new Date().toISOString().substr(11, 8);
+            this.logEntries.push("(" + time + ") " + text);
+            console.log(text);
+        },
         clearYoutubeUrl: function() {
             this.youtubeUrl = "";
         },
         submitYoutubeUrl: function() {
+            this.log("controller client emit loadVideo");
             this.socket.emit("loadVideo", this.youtubeUrl);
         },
         showInstructions: function() {
@@ -132,12 +196,15 @@ new Vue({
             alert(text);
         },
         play: function() {
+            this.log("controller client emit controlVideo");
             this.emit("controlVideo", { name: "play" });
         },
         pause: function() {
+            this.log("controller client emit controlVideo");
             this.emit("controlVideo", { name: "pause" });
         },
         seek: function(amount) {
+            this.log("controller client emit controlVideo");
             this.emit("controlVideo", { name: "seek", amount: amount });
         },
         emit: function(channel, object) {

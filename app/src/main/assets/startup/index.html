@@ -1,15 +1,19 @@
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Youtube projector startup page</title>
     </head>
     <body>
-        <a href="http://localhost:4001">http://localhost:4001</a>
-        <br>
-        <button type="button" onclick="doStuff()">Do stuff</button>
+        <p>Loading...</p>
+        <div id="problem" style="display:none">
+            <p>Could not detect successfully if the Node application is loaded.</p>
+            <p>Press this button to retry: <button type="button" onclick="location.reload()">Retry</button></p>
+            <p>Or try this link: <a href="http://localhost:4001">http://localhost:4001</a></p>
+        </div>
 
         <script>
 
-        function doStuff() {
+        function detectAndLoadControllerApp() {
             var xhr = new XMLHttpRequest();
             var currentTry = 0;
             var maxTries = 5;
@@ -27,7 +31,7 @@
                         scheduleRequest();
                     }
                     else {
-                        alert("Problem");
+                        onProblem();
                     }
                 }
             };
@@ -38,7 +42,7 @@
                     scheduleRequest();
                 }
                 else {
-                    alert("Problem");
+                    onProblem();
                 }
             };
 
@@ -51,11 +55,17 @@
 
             function scheduleRequest() {
                 currentTry++;
+                console.log("Scheduling request for try " + currentTry);
                 setTimeout(makeRequest, 2000);
             }
         }
 
-        doStuff();
+        function onProblem() {
+            var onProblemDiv = document.getElementById("problem");
+            onProblemDiv.style.display = "block";
+        }
+
+        detectAndLoadControllerApp();
 
         </script>
     </body>

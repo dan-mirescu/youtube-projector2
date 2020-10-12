@@ -17,7 +17,7 @@ div#overlay {
     left: 0;
     background: rgba(0,0,0,0.8);
     color: white;
-    padding-top: 45%;
+    padding-top: 200px;
     text-align: center;
     font-size: 80px;
     cursor: pointer;
@@ -26,7 +26,6 @@ div#overlay {
 div#header {
     position: absolute;
     z-index: 100;
-    display: flex;
     padding: 0 15px;
     top: 0;
     left: 0;
@@ -34,13 +33,59 @@ div#header {
     background: rgba(0,0,0,0.7);
     color: white;
 }
+#header .header-row {
+    display: flex;
+}
+
+.connection-indicator {
+    color: white;
+    width: 60px;
+    height: 28px;
+    line-height: 25px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.connection-indicator.red {
+    background-color: red;
+}
+
+.connection-indicator.orange {
+    background-color: orange;
+}
+
+.connection-indicator.green {
+    background-color: green;
+}
+
+#header .header-section-label {
+    padding: 5px 0;
+}
+
+#header-popunder {
+    position: absolute;
+    z-index: 100;
+    left: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+}
+#header-popunder .popunder {
+    padding: 5px 10px;
+}
 
 #header .header-col-1 {
     flex: 0 1 auto;
-    width: 150px;
+    width: 175px;
+    padding: 7px 0;
 }
 
 #header .header-col-2 {
+    flex: 0 1 auto;
+    width: 80px;
+    margin-right: 18px;
+}
+
+#header .header-col-3 {
     flex: 1 1 auto;
 }
 
@@ -49,4 +94,18 @@ div#header {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
+}
+
+.display-flex {
+    display: flex;
+}
+
+.popunder-title {
+    flex: 1 1 auto;
+    margin: 0px;
+    min-width: 130px;
+}
+
+button {
+    margin: 3px 3px;
 }

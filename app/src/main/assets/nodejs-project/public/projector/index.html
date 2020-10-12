@@ -15,17 +15,43 @@
 
             <transition name="fade">
                 <div id="header" v-if="headerVisible">
-                    <div class="header-col-1">
-                        <!-- tbd -->
+                    <div class="header-row">
+                        <div class="header-col-1">
+                            <button v-on:click="play()">Play</button>
+                            <button v-on:click="pause()">Pause</button>
+                            <button v-on:click="seek(-5)">Seek -5s</button>
+                            <button v-on:click="seek(5)">Seek +5s</button>
+                            <button v-on:click="logVisible = !logVisible">Log</button>
+                            <button v-on:click="goFullscreen()">Fullscreen</button>
+                        </div>
+                        <div class="header-col-2">
+                            <div class="header-section-label">Connection</div>
+                            <div class="connection-indicator" :class="connectionCssClass">
+                                {{connectionStatus}}
+                            </div>
+                        </div>
+                        <div class="header-col-3">
+                            <p>{{video.title}}</p>
+                            <p><span v-if="video.videoUrl">{{video.playState}}, </span>{{ video.currentTime | friendlyTime }} / {{ video.totalTime | friendlyTime }}</p>
+                        </div>
                     </div>
-                    <div class="header-col-2">
-                        <p>{{video.title}}</p>
-                        <p>{{video.playState}}, {{ video.currentTime | friendlyTime }} / {{ video.totalTime | friendlyTime }}</p>
+                    
+
+                    <div id="header-popunder">
+                        <div class="popunder log" v-if="logVisible">
+                            <div class="display-flex">
+                                <h3 class="popunder-title">Log</h3>
+                                <button type="button" v-on:click="clearLog()">Clear log</button>
+                                <button type="button" v-on:click="logVisible = false">X</button>
+                            </div>
+                            <p v-if="!logEntries.length">&lt; no entry &gt;</p>
+                            <p v-for="entry in logEntries">{{entry}}</p>
+                        </div>
                     </div>
                 </div>
             </transition>
             
-            <video ref="videoElement"></video>
+            <video ref="videoElement" controls></video>
             <audio ref="audioElement"></audio>
         </div>
         <script src="script.js"></script>

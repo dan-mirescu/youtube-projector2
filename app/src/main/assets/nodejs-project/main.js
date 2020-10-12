@@ -53,6 +53,7 @@ function populateServerData() {
 populateServerData();
 
 const state = {
+    connectedProjectorsCount: 0,
     loadedVideo: {
         url: undefined,
         // playState: undefined,
@@ -74,6 +75,25 @@ function configureProjectorApp() {
 
     projectorIo.on('connection', function(socket){
         console.log('projector io connected');
+        state.connectedProjectorsCount ++;
+
+        controllerIo.emit("serverStateUpdate", JSON.stringify({
+            connectedProjectorsCount: state.connectedProjectorsCount
+        }));
+
+        socket.on("disconnect", () => {
+            console.log('!! projector socket disconnected');
+            state.connectedProjectorsCount --;
+            controllerIo.emit("serverStateUpdate", JSON.stringify({
+                connectedProjectorsCount: state.connectedProjectorsCount
+            }));
+        });
+
+        socket.on("error", (error) => {
+            let message = '!! projector socket error: ' + error;
+            console.log(message);
+            controllerIo.emit("message", message);
+        });
 
         if(state.loadedVideo.url) {
             console.log("projector server emit loadVideoInProjector");
@@ -115,6 +135,14 @@ function configureControllerApp() {
 
     controllerIo.on('connection', function(socket){
         console.log('controller io connected');
+
+        socket.on("disconnect", () => {
+            console.log('!! controller socket disconnected');
+        });
+
+        socket.on("error", (error) => {
+            console.log('!! controller socket error: ' + error);
+        });
 
         if(state.loadedVideo.url) {
             console.log("projector server emit loadVideoInProjector");

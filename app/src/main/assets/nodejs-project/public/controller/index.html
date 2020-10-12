@@ -19,6 +19,10 @@
                 <button v-on:click="showInstructions()">Instructions</button>
             </div>
 
+            <div>
+                Connected projectors: {{connectedProjectorsCount}}
+            </div>
+
             <div v-if="!video.url">
                 <p>No video loaded yet.</p>
             </div>
@@ -42,6 +46,12 @@
                 <div class="video-description">
                     {{video.description}}
                 </div>
+            </div>
+
+            <div class="log">
+                <h3>Log</h3>
+                <p v-if="!logEntries.length">&lt; no entry &gt;</p>
+                <p v-for="entry in logEntries">{{entry}}</p>
             </div>
 
         </div>
