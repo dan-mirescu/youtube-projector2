@@ -7,6 +7,7 @@
         <script src="lib/socket.io.js"></script>
     </head>
     <body>
+        <button onclick="boom()">boom</button>
         <div id="app">
             <div class="controls-row">
                 <button v-if="clipboardAccessType != 'none'" v-on:click="pasteYoutubeUrl()">Paste Youtube URL</button>

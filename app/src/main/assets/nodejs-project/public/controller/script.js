@@ -1,4 +1,5 @@
-new Vue({
+function boom() {
+window.ControllerApp = new Vue({
     el: "#app",
     data: {
         socket: undefined,
@@ -165,6 +166,10 @@ new Vue({
         //     // tbd
         //     // if(newVideoState.fullscreen)
         // });
+
+        if(typeof(NativeAndroid) != "undefined") {
+            NativeAndroid.notifyControllerAppReady();
+        }
     },
     methods: {
         pasteYoutubeUrl: function() {
@@ -172,17 +177,13 @@ new Vue({
 
             switch(this.clipboardAccessType) {
                 case "NativeAndroid": {
-                    self.youtubeUrl = NativeAndroid.pasteFromClipboard();
-                    self.log("controller client emit loadVideo");
-                    self.socket.emit("loadVideo", self.youtubeUrl);
+                    self.setYoutubeUrl(NativeAndroid.pasteFromClipboard());
                     break;
                 }
                 case "browser": {
                     navigator.clipboard.readText()
                     .then(function(url) {
-                        self.youtubeUrl = url;
-                        self.log("controller client emit loadVideo");
-                        self.socket.emit("loadVideo", url);
+                        self.setYoutubeUrl(url);
                     })
                     .catch(function() {
                         alert("Automating pasting did not work.\nPaste your link in the text field that will be displayed.");
@@ -194,6 +195,13 @@ new Vue({
 
             // var url = await navigator.clipboard.readText();
             // this.socket.emit("loadVideo", url);
+        },
+        setYoutubeUrl: function(url) {
+            console.log("setYoutubeUrl");
+            debugger;
+            this.youtubeUrl = url;
+            this.log("controller client emit loadVideo");
+            this.socket.emit("loadVideo", url);
         },
         log: function(text) {
             var time = new Date().toISOString().substr(11, 8);
@@ -215,7 +223,7 @@ new Vue({
             var urls = this.serverData.localIpAddresses.map(function(ip) {
                 return "http://" + ip + ":" + self.serverData.projectorServerPort;
             });
-                
+
             var text = urls.join("\n");
             alert(text);
         },
@@ -236,3 +244,5 @@ new Vue({
         }
     }
 });
+}
+

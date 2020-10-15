@@ -177,7 +177,6 @@
       "project": {
         "compilerSettingsCacheFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\.cxx",
         "cxxFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\.cxx",
-        "ideBuildTargetAbi": "arm64-v8a,armeabi-v7a,armeabi",
         "isBuildOnlyTargetAbiEnabled": true,
         "isCmakeBuildCohabitationEnabled": false,
         "isNativeCompilerSettingsCacheEnabled": false,
@@ -201,7 +200,10 @@
     "objFolder": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\build\\intermediates\\cmake\\debug\\obj",
     "variantName": "debug",
     "validAbiList": [
-      "ARM64_V8A"
+      "ARMEABI_V7A",
+      "ARM64_V8A",
+      "X86",
+      "X86_64"
     ],
     "prefabDirectory": "D:\\Proiecte\\youtube-projector2\\YoutubeProjector\\app\\.cxx\\cmake\\debug\\prefab",
     "prefabPackageDirectoryList": []

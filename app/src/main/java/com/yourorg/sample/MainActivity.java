@@ -4,11 +4,13 @@ import android.app.Application;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,6 +45,33 @@ public class MainActivity extends AppCompatActivity {
 
             return null;
         }
+
+        @JavascriptInterface
+        public void notifyControllerAppReady() {
+            MainActivity._controllerAppReady = true;
+            if(MainActivity.this._pendingYoutubeUrl != null) {
+                final String youtubeUrl = MainActivity.this._pendingYoutubeUrl;
+                MainActivity.this._pendingYoutubeUrl = null;
+
+                Handler handler = new Handler();
+                handler.post(new Thread(new Runnable() {
+                    public void run() {
+                        WebView webView = (WebView) findViewById(R.id.webview);
+////                        webView.evaluateJavascript("javascript:alert('test')", null);
+                        webView.evaluateJavascript("ControllerApp.setYoutubeUrl('" + youtubeUrl + "')", null);
+                    }
+                }));
+
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        WebView webView = (WebView) findViewById(R.id.webview);
+////                        webView.evaluateJavascript("javascript:alert('test')", null);
+//                        webView.evaluateJavascript("ControllerApp.setYoutubeUrl('" + youtubeUrl + "')", null);
+//                    }
+//                }).start();
+            }
+        }
     }
 
     // Used to load the 'native-lib' library on application startup.
@@ -54,6 +83,28 @@ public class MainActivity extends AppCompatActivity {
     //We just want one instance of node running in the background.
     public static boolean _startedNodeAlready=false;
 
+    private static boolean _controllerAppReady = false;
+    private String _pendingYoutubeUrl;
+    private WebView _webView;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // check if the external Youtube app has shared a video with this app
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String incomingText = extras.getString(Intent.EXTRA_TEXT);
+            if(incomingText != null) {
+                _pendingYoutubeUrl = incomingText;
+            }
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +114,10 @@ public class MainActivity extends AppCompatActivity {
         myWebView.loadUrl("file:///android_asset/startup/index.html");
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+
         myWebView.addJavascriptInterface(new WebAppInterface(), "NativeAndroid");
 
         myWebView.setWebChromeClient(new WebChromeClient());
-
         myWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
