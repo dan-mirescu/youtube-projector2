@@ -53,14 +53,21 @@ public class MainActivity extends AppCompatActivity {
                 final String youtubeUrl = MainActivity.this._pendingYoutubeUrl;
                 MainActivity.this._pendingYoutubeUrl = null;
 
-                Handler handler = new Handler();
-                handler.post(new Thread(new Runnable() {
+                (new Thread(new Runnable() {
                     public void run() {
-                        WebView webView = (WebView) findViewById(R.id.webview);
-////                        webView.evaluateJavascript("javascript:alert('test')", null);
-                        webView.evaluateJavascript("ControllerApp.setYoutubeUrl('" + youtubeUrl + "')", null);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                MainActivity.this._webView.evaluateJavascript("ControllerApp.setYoutubeUrl('" + youtubeUrl + "')", null);
+                            }
+                        });
                     }
-                }));
+                })).start();
 
 //                new Thread(new Runnable() {
 //                    @Override
@@ -87,38 +94,68 @@ public class MainActivity extends AppCompatActivity {
     private String _pendingYoutubeUrl;
     private WebView _webView;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // check if the external Youtube app has shared a video with this app
-        Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            String incomingText = extras.getString(Intent.EXTRA_TEXT);
-            if(incomingText != null) {
-                _pendingYoutubeUrl = incomingText;
-            }
-        }
+    private void sendYoutubeUrlToControllerApp(String youtubeUrl) {
+        _webView.evaluateJavascript("ControllerApp.setYoutubeUrl('" + youtubeUrl + "')", null);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        // check if the external Youtube app has shared a video with this app
+        Bundle extras = intent.getExtras();
+        if(extras != null) {
+            String incomingText = extras.getString(Intent.EXTRA_TEXT);
+            if(incomingText != null) {
+                _pendingYoutubeUrl = incomingText;
+                if(_controllerAppReady) {
+                    sendYoutubeUrlToControllerApp(_pendingYoutubeUrl);
+                    _pendingYoutubeUrl = null;
+                }
+            }
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        android.os.Debug.waitForDebugger();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        WebView myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.loadUrl("file:///android_asset/startup/index.html");
-        WebSettings webSettings = myWebView.getSettings();
+        // check if the app was started directly by a share from the youtube app
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String incomingText = extras.getString(Intent.EXTRA_TEXT);
+            if (incomingText != null) {
+                _pendingYoutubeUrl = incomingText;
+            }
+        }
+
+        _webView = (WebView) findViewById(R.id.webview);
+
+//        Intent intent = getIntent();
+//        // reuse activity already started with ACTION_MAIN
+//        // useful if application was already started, then a video is shared from the Youtube app
+//        if(intent.getAction() != Intent.ACTION_MAIN) {
+//            Intent newIntent = new Intent(this, MainActivity.class);
+//            newIntent.setAction(Intent.ACTION_MAIN);
+//            newIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+//            newIntent.putExtras(intent.getExtras());
+//            newIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//
+//            startActivity(newIntent);
+//            return;
+//        }
+
+
+        _webView.loadUrl("file:///android_asset/startup/index.html");
+        WebSettings webSettings = _webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
 
-        myWebView.addJavascriptInterface(new WebAppInterface(), "NativeAndroid");
+        _webView.addJavascriptInterface(new WebAppInterface(), "NativeAndroid");
 
-        myWebView.setWebChromeClient(new WebChromeClient());
-        myWebView.setWebViewClient(new WebViewClient() {
+        _webView.setWebChromeClient(new WebChromeClient());
+        _webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 view.loadUrl(request.getUrl().toString());

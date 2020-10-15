@@ -1,4 +1,4 @@
-function boom() {
+// function boom() {
 window.ControllerApp = new Vue({
     el: "#app",
     data: {
@@ -6,6 +6,8 @@ window.ControllerApp = new Vue({
         clipboardAccessType: undefined,
         youtubeUrl: undefined,
         serverData: undefined,
+        waitingForResponse: false,
+        showTip: undefined,
         serverConnectionStatus: "pending",
         serverConnectionStatusCssClass: "orange",
         connectedProjectorsCount: 0,
@@ -27,6 +29,8 @@ window.ControllerApp = new Vue({
     },
     mounted: function() {
         this.socket = io();
+
+        this.showTip = localStorage.getItem("showTip") == "false" ? false : true;
 
         if(typeof(NativeAndroid) != "undefined") {
             this.clipboardAccessType = "NativeAndroid";
@@ -120,6 +124,8 @@ window.ControllerApp = new Vue({
 
         this.socket.on("loadVideoResponse", function(responseText) {
             self.log("controller client on loadVideoResponse");
+            self.waitingForResponse = false;
+            
             var response = JSON.parse(responseText);
 
             if(response.type == "error") {
@@ -198,10 +204,14 @@ window.ControllerApp = new Vue({
         },
         setYoutubeUrl: function(url) {
             console.log("setYoutubeUrl");
-            debugger;
             this.youtubeUrl = url;
             this.log("controller client emit loadVideo");
             this.socket.emit("loadVideo", url);
+            this.waitingForResponse = true;
+        },
+        hideTip: function() {
+            this.showTip = false;
+            localStorage.setItem("showTip", "false");
         },
         log: function(text) {
             var time = new Date().toISOString().substr(11, 8);
@@ -220,11 +230,15 @@ window.ControllerApp = new Vue({
         },
         showInstructions: function() {
             var self = this;
+
+            var text = "Connect the browser on your smart TV (or other device) to one of the following addresses.\n";
+            text += "Please make sure that your smart TV / device is on the same local network with this application.\n\n";
+
             var urls = this.serverData.localIpAddresses.map(function(ip) {
                 return "http://" + ip + ":" + self.serverData.projectorServerPort;
             });
 
-            var text = urls.join("\n");
+            text += urls.join("\n");
             alert(text);
         },
         play: function() {
@@ -244,5 +258,5 @@ window.ControllerApp = new Vue({
         }
     }
 });
-}
+// }
 

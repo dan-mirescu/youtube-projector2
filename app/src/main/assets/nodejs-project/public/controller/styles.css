@@ -14,6 +14,18 @@ button {
     height: 40px;
 }
 
+.status-row {
+    display: flex;
+}
+.status-row .left {
+    flex: 1 1 auto;
+}
+.status-row .right {
+    flex: 0 1 auto;
+    background: url(res/spinner.gif) -10px -6px no-repeat;
+    width: 37px;
+}
+
 .connection-status.orange {
     color: orange;
 }
@@ -37,6 +49,7 @@ button {
 
 .controls-row {
     display: flex;
+    margin-bottom: 5px;
 }
 
 .controls-row .no-clipboard-access {
@@ -52,4 +65,14 @@ button {
     flex: 1 1 auto;
     margin: 0px;
     min-width: 130px;
+}
+
+.tip {
+    border: 1px solid black;
+    padding: 5px 10px;
+    background: silver;
+}
+
+.tip a {
+    white-space: nowrap;
 }

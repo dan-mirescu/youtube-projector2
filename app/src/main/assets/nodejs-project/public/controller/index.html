@@ -7,7 +7,7 @@
         <script src="lib/socket.io.js"></script>
     </head>
     <body>
-        <button onclick="boom()">boom</button>
+        <!-- <button onclick="boom()">boom</button> -->
         <div id="app">
             <div class="controls-row">
                 <button v-if="clipboardAccessType != 'none'" v-on:click="pasteYoutubeUrl()">Paste Youtube URL</button>
@@ -20,10 +20,19 @@
                 <button v-on:click="showInstructions()">Instructions</button>
             </div>
 
-            <div style="margin-top: 5px">
-                Server connection: <span class="connection-status" :class="serverConnectionStatusCssClass">{{serverConnectionStatus}}</span>
-                <br>
-                Connected projectors: {{connectedProjectorsCount}}
+            <div class="tip" v-if="showTip">
+                Tip: You can also use the Share button under a video in the Youtube app, then tap on Youtube projector.
+                <a href="#" v-on:click="hideTip()">Hide tip</a>
+            </div>
+
+            <div class="status-row">
+                <div class="left">
+                    Server connection: <span class="connection-status" :class="serverConnectionStatusCssClass">{{serverConnectionStatus}}</span>
+                    <br>
+                    Connected projectors: {{connectedProjectorsCount}}
+                </div>
+                <div class="right" v-if="waitingForResponse">
+                </div>
             </div>
 
             <div v-if="!video.url">
